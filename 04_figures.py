@@ -128,7 +128,7 @@ def fig_framework():
         xs3, w3 = (0.6, 3.62, 6.64, 9.66, 12.68), 2.72
         tests = ("Permutation null:\n1,000 null datasets\n(Section 3.3)",
                  "Stability and\nsplit-half replication\n(Section 3.4)",
-                 "Eight other\nclustering methods\n(Section 3.5)",
+                 "Nine other\nclustering methods\n(Section 3.5)",
                  "11 sociodemographic\nattributes and\nrepresentation\n(Sections 3.6–3.7)",
                  "Sensitivity to\n$\\zeta$ and $\\kappa$:\n121 settings\n(Section 3.8)")
         for x, t in zip(xs3, tests):
@@ -146,7 +146,7 @@ def fig_null_validity():
     panels = [("mod_sil", "(a) Modified silhouette\n(selection criterion of Algorithm 1)", "Modified silhouette"),
               ("sil_euc", "(b) Euclidean silhouette", "Silhouette (Euclidean)"),
               ("ch", "(c) Calinski–Harabasz index", "Calinski–Harabasz index")]
-    fig, axes = plt.subplots(1, 3, figsize=(WIDTH, 5.4 * CM), layout="constrained")
+    fig, axes = plt.subplots(1, 3, figsize=(WIDTH, 4.8 * CM), layout="constrained")
     for ax, (key, title, xlabel) in zip(axes, panels):
         x = null[key].dropna().to_numpy()
         real, p = v[key]["real"], v[key]["p"]
@@ -170,7 +170,7 @@ def fig_null_validity():
 def fig_membership():
     m = np.load(RES / "membership.npz")
     real, null = m["real"], m["null"].ravel()
-    fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 5.6 * CM), layout="constrained",
+    fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 4.8 * CM), layout="constrained",
                                gridspec_kw={"width_ratios": [1.1, 1]})
     counts, _, _ = a.hist(real, bins=np.linspace(0.5, 1.0, 51), color=OBS, edgecolor="white", linewidth=0.4)
     a.set_xlim(0.5, 1.0)
@@ -201,7 +201,7 @@ def fig_membership():
 def fig_insample_heldout():
     s = pd.read_csv(RES / "split.csv")
     rng = np.random.default_rng(0)
-    fig, axes = plt.subplots(1, 2, figsize=(WIDTH, 6.2 * CM), layout="constrained")
+    fig, axes = plt.subplots(1, 2, figsize=(WIDTH, 5.0 * CM), layout="constrained")
     specs = [(axes[0], ("in_max_gap", "held_max_gap"), "(a) Largest difference between subgroup means",
               "Difference in P-HFE score"),
              (axes[1], ("in_sig_bh", "held_sig_bh"), "(b) Models with a significant subgroup difference",
@@ -236,43 +236,48 @@ def fig_insample_heldout():
 def fig_representation():
     r = pd.read_csv(RES / "external_representation.csv")
     names = {"region": "Region", "age": "Age", "gender": "Gender", "religion": "Religion", "ethnicity": "Ethnicity"}
-    rows, labels, headers = [], [], []
-    y = 0
-    for var in names:
-        g = r[r.variable == var]
-        if var == "age":
-            g = g.sort_values("group")
-        else:
-            g = g.sort_values("n", ascending=False)
-        headers.append((y, names[var]))
-        y += 1
-        for _, row in g.iterrows():
-            short = (row.group.replace(" years old", "").replace("Latin America and the Caribbean", "Latin America & Caribbean")
-                     .replace("Australia and New Zealand", "Australia & New Zealand").replace("Non-binary / third gender", "Non-binary"))
-            rows.append((y, row))
-            labels.append((y, f"{short} (n = {row.n})"))
+    panels = [("region", "age"), ("gender", "religion", "ethnicity")]       # two columns keep the figure short
+
+    def layout(variables):
+        rows, labels, headers, y = [], [], [], 0
+        for var in variables:
+            g = r[r.variable == var]
+            g = g.sort_values("group") if var == "age" else g.sort_values("n", ascending=False)
+            headers.append((y, names[var]))
             y += 1
-        y += 0.4
-    fig, ax = plt.subplots(figsize=(WIDTH, (0.36 * y + 2.2) * CM), layout="constrained")
-    for yy, row in rows:
-        ax.plot([row.tau_null_q025, row.tau_null_q975], [yy, yy], color=NULL_FILL, linewidth=4.2, solid_capstyle="round", zorder=1)
-        ax.plot(row.tau_flat, yy, "o", markersize=5, color=OBS, markeredgecolor="white", markeredgewidth=0.8, zorder=3)
-        ax.plot(row.tau_consensus, yy, "|", markersize=8, color=CONS, markeredgewidth=1.4, zorder=4)
-        if row.p_underrepresented < 0.10:
-            ax.text(1.005, yy, fmt_p(row.p_underrepresented), va="center", ha="left", fontsize=7, color=INK2)
-    ticks = sorted(labels + headers)
-    ax.set_yticks([yy for yy, _ in ticks], [t for _, t in ticks])
-    header_rows = {yy for yy, _ in headers}
-    for tick, (yy, _) in zip(ax.get_yticklabels(), ticks):
-        if yy in header_rows:
-            tick.set_fontweight("bold")
-            tick.set_color(INK)
-    ax.tick_params(axis="y", length=0, pad=4)
-    ax.set_ylim(y - 0.6, -0.8)
-    ax.set_xlim(np.floor((r.tau_null_q025.min() - 0.02) * 20) / 20, 1.0)
-    ax.xaxis.grid(True)
-    ax.spines["left"].set_visible(False)
-    ax.set_xlabel("Kendall's τ between the group's model ranking and the pooled ranking")
+            for _, row in g.iterrows():
+                short = (row.group.replace(" years old", "").replace("Latin America and the Caribbean", "Latin America & Caribbean")
+                         .replace("Australia and New Zealand", "Australia & New Zealand").replace("Non-binary / third gender", "Non-binary"))
+                rows.append((y, row))
+                labels.append((y, f"{short} (n = {row.n})"))
+                y += 1
+            y += 0.4
+        return rows, labels, headers, y
+
+    layouts = [layout(p) for p in panels]
+    height = max(lay[3] for lay in layouts)
+    xmin = np.floor((r.tau_null_q025.min() - 0.02) * 20) / 20
+    fig, axes = plt.subplots(1, 2, figsize=(WIDTH, (0.34 * height + 2.4) * CM), layout="constrained")
+    for ax, (rows, labels, headers, _) in zip(axes, layouts):
+        for yy, row in rows:
+            ax.plot([row.tau_null_q025, row.tau_null_q975], [yy, yy], color=NULL_FILL, linewidth=3.8, solid_capstyle="round", zorder=1)
+            ax.plot(row.tau_flat, yy, "o", markersize=4.5, color=OBS, markeredgecolor="white", markeredgewidth=0.7, zorder=3)
+            ax.plot(row.tau_consensus, yy, "|", markersize=7, color=CONS, markeredgewidth=1.3, zorder=4)
+            if row.p_underrepresented < 0.10:
+                ax.text(xmin + 0.01, yy, fmt_p(row.p_underrepresented), va="center", ha="left", fontsize=6.5, color=INK2)
+        ticks = sorted(labels + headers)
+        ax.set_yticks([yy for yy, _ in ticks], [t for _, t in ticks])
+        header_rows = {yy for yy, _ in headers}
+        for tick, (yy, _) in zip(ax.get_yticklabels(), ticks):
+            if yy in header_rows:
+                tick.set_fontweight("bold")
+                tick.set_color(INK)
+        ax.tick_params(axis="y", length=0, pad=4)
+        ax.set_ylim(height - 0.6, -0.8)
+        ax.set_xlim(xmin, 1.0)
+        ax.xaxis.grid(True)
+        ax.spines["left"].set_visible(False)
+    fig.supxlabel("Kendall's τ between the group's model ranking and the pooled ranking", fontsize=7.5)
     handles = [Line2D([], [], marker="o", linestyle="", markersize=5, color=OBS, markeredgecolor="white", label="Pooled (flat) ranking"),
                Line2D([], [], marker="|", linestyle="", markersize=8, markeredgewidth=1.4, color=CONS, label="SCO-FCM weighted consensus"),
                Line2D([], [], color=NULL_FILL, linewidth=4.2, solid_capstyle="round", label="95% range for a random group of equal size")]
@@ -286,7 +291,7 @@ def fig_sensitivity():
     zetas, kappas = np.sort(s.zeta.unique()), np.sort(s.kappa.unique())
     grid = lambda col: s.pivot(index="zeta", columns="kappa", values=col).loc[zetas, kappas].to_numpy()
     seq = LinearSegmentedColormap.from_list("seq_blue", BLUES)
-    fig, axes = plt.subplots(1, 3, figsize=(WIDTH, 7.6 * CM), layout="constrained")
+    fig, axes = plt.subplots(1, 3, figsize=(WIDTH, 6.0 * CM), layout="constrained")
     edges_k = np.append(kappas - 0.05, kappas[-1] + 0.05)
     edges_z = np.append(zetas - 0.05, zetas[-1] + 0.05)
 

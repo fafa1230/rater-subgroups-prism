@@ -49,7 +49,7 @@ pip install -r requirements.txt
 | 10 | `python -I 03_analyze.py membership` | Largest fuzzy membership of every participant, real and null |
 | 11 | `python -I 03_analyze.py sensitivity` | ζ × κ grid (11 × 11), each cell against the same 1,000 nulls as step 4 |
 | 12 | `python -I 04_figures.py` | Figures 2.1 and 3.1–3.5 at printed width (16 cm), PNG 600 dpi and PDF, in `figures/` |
-| 13 | `python -I 05_tables.py` | Tables 2.1–2.2, 3.1–3.5, and A1 as Markdown, HTML (for Word), and CSV in `results/tables/` |
+| 13 | `python -I 05_tables.py` | Tables 2.1–2.2 and 3.1–3.4 of the article and supplementary Tables S1–S2 as Markdown, HTML (for Word), and CSV in `results/tables/` |
 
 All settings are in `config.py`; random seeds are fixed.
 

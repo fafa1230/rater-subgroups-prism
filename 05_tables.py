@@ -55,32 +55,24 @@ def t_data():
             ("Language models", d["models"]),
             ("Conversations", f"{d['conversations']:,}"),
             ("Opening-turn ratings (1–100)", f"{d['opening_ratings']:,}"),
-            ("Pairwise outcomes derived from opening turns", f"{d['pairwise_outcomes']:,}"),
-            ("Opening turns with 4 / 3 / 2 models", " / ".join(f"{d['models_per_opening_turn'][k]:,}" for k in ("4", "3", "2"))),
-            ("Share of tied outcomes", f"{100 * d['tie_share_of_outcomes']:.1f}%"),
-            ("Density of the participant × model profile", f"{100 * d['density']:.1f}%"),
-            ("Models rated per participant (mean)", f"{d['models_rated_per_participant_mean']:.1f}"),
-            ("Outcomes per participant–model cell (median)", f"{d['outcomes_per_cell_median']:.0f}"),
-            ("Participants per model (min–max)", "–".join(map(str, d["participants_per_model_min_max"]))),
-            ("Conversation types (unguided / values / controversy)",
-             " / ".join(f"{d['conversation_types'][k]:,}" for k in ("unguided", "values guided", "controversy guided")))]
+            ("Pairwise outcomes", f"{d['pairwise_outcomes']:,}"),
+            ("Outcomes per observed cell (median)", f"{d['outcomes_per_cell_median']:.0f}"),
+]
     table("Table 2.1 Data used in this study (PRISM opening turns)", pd.DataFrame(rows, columns=["Item", "Value"]),
           slug="table2_1_data")
 
 
 # ---------------------------------------------------------------- Table 2.2 mapping of the method to the data
 def t_mapping():
-    rows = [("Decision maker (DM)", "Expert or stakeholder", "PRISM participant who rated model responses"),
+    rows = [("Decision maker (DM)", "Expert or stakeholder", "PRISM participant"),
             ("Assessment", "Probabilistic hesitant fuzzy element (P-HFE)",
-             "Win (1), tie (0.5), and loss (0) outcomes of a model in the participant's opening turns, with their relative frequencies"),
-            ("Score of a P-HFE", "Score function with a fluctuation penalty", "Unchanged"),
+             "Win (1), tie (0.5), and loss (0) outcomes in opening turns, with relative frequencies"),
             ("Background relation, weighted by ζ", "Historical background correlation",
-             "Similarity of the stated importance of eight response attributes (survey)"),
+             "Similarity of the stated importance of eight response attributes"),
             ("Current relation", "Current research correlation",
-             "Jaccard similarity of the sets of models a participant chose as best"),
-            ("κ", "Weight of distance vs reachability in clustering and in the modified silhouette", "Unchanged (0.6)"),
-            ("μ", "Weight of cohesion vs size in subgroup weights", "Unchanged (0.5; 0–1 examined)"),
-            ("Number of subgroups", "c ∈ {2, …, 8}, maximum modified silhouette", "Unchanged")]
+             "Jaccard similarity of the models chosen as best"),
+            ("Score function, κ, μ, and c", "Fluctuation penalty; distance vs reachability; cohesion vs size; c ∈ {2, …, 8}",
+             "Unchanged (κ = 0.6, μ = 0.5)")]
     table("Table 2.2 SCO-FCM components and their counterparts in this study",
           pd.DataFrame(rows, columns=["Component", "Baseline [5]", "This study"]), slug="table2_2_mapping")
 
@@ -88,10 +80,10 @@ def t_mapping():
 # ---------------------------------------------------------------- Table 3.1 validity against the null
 def t_validity():
     v = load("validity.json")
-    names = {"mod_sil": "Modified silhouette at c* (selection criterion)", "sil_euc": "Silhouette, Euclidean",
-             "sil_reach": "Silhouette, current relation", "fpc_norm": "Normalized fuzzy partition coefficient",
-             "xb": "Xie–Beni index (lower is better)", "db": "Davies–Bouldin index (lower is better)",
-             "ch": "Calinski–Harabasz index"}
+    names = {"mod_sil": "Modified silhouette at c*", "sil_euc": "Silhouette, Euclidean",
+             "sil_reach": "Silhouette, current relation", "fpc_norm": "Normalized FPC",
+             "xb": "Xie–Beni (lower is better)", "db": "Davies–Bouldin (lower is better)",
+             "ch": "Calinski–Harabasz"}
     rows = []
     for k, label in names.items():
         t = v["tests_at_cstar"][k]
@@ -102,13 +94,13 @@ def t_validity():
         rows.append((label, obs, nul, fp(t["p"])))
     sel = pd.read_csv(RES / "validity_null.csv")["mod_sil_max"].dropna()
     t = v["tests_at_cstar"]["mod_sil_max_over_c"]
-    rows.insert(1, ("Modified silhouette, best over c = 2–8 (selection-aware)", f3(t["real"]),
+    rows.insert(1, ("Modified silhouette, best c (selection-aware)", f3(t["real"]),
                     f"{sel.mean():.3f} [{sel.quantile(.025):.3f}, {sel.quantile(.975):.3f}]", fp(t["p"])))
     share = v["null_cstar_counts"].get("2", 0) / v["n_null"]
     table(f"Table 3.1 Cluster validity of the selected partition (c* = {v['c_star']}) against {v['n_null']:,} permutation nulls",
           pd.DataFrame(rows, columns=["Index", "Observed", "Null mean [95% range]", "p"]),
           note=(f"One-sided permutation p-values. The selection-aware row compares the best value over c = 2–8 with the best "
-                f"value attained on each null dataset, as in Table 3.5. The null selected c* = 2 in {100 * share:.0f}% of replicates."),
+                f"value attained on each null dataset. The null selected c* = 2 in {100 * share:.0f}% of replicates."),
           slug="table3_1_validity")
 
 
@@ -121,44 +113,46 @@ def t_replication():
 
     def mr(x):                                       # mean [2.5th, 97.5th percentile] over the splits
         return f"{f3(x.mean())} [{f3(x.quantile(.025))}, {f3(x.quantile(.975))}]"
-    rows = [("Stability: ARI with the full-data partition, 80% subsamples (median)", f3(st.ari.median()), "–"),
-            ("Stability: Jaccard similarity of the smaller subgroup (median)", f3(st.jac_min.median()), "–"),
-            ("Replication: ARI between the partitions of halves A and B", f3(obs.ari_AB.mean(), 4), f3(nul.ari_AB.mean(), 4)),
-            ("Largest subgroup difference, in-sample (half A)", mr(obs.in_max_gap), mr(nul.in_max_gap)),
-            ("Largest subgroup difference, held-out (half B)", mr(obs.held_max_gap), mr(nul.held_max_gap)),
-            ("Largest effect size ε², in-sample (half A)", mr(obs.in_max_eps2), mr(nul.in_max_eps2)),
-            ("Largest effect size ε², held-out (half B)", mr(obs.held_max_eps2), mr(nul.held_max_eps2)),
-            ("Models (of 21) with a significant difference, in-sample", f3(obs.in_sig_bh.mean(), 2), f3(nul.in_sig_bh.mean(), 2)),
-            ("Models (of 21) with a significant difference, held-out", f3(obs.held_sig_bh.mean(), 2), f3(nul.held_sig_bh.mean(), 2)),
-            ("Correlation of subgroup preference profiles, A vs B", f3(obs.profile_r.mean()), f3(nul.profile_r.mean())),
-            ("Split-half reliability of individual preferences (r per model)", f3(rel.loc["real", "r_model_mean"]),
+    rows = [("Stability: ARI with the full-data partition (median)", f3(st.ari.median()), "–"),
+            ("Stability: Jaccard, smaller subgroup (median)", f3(st.jac_min.median()), "–"),
+            ("Replication: ARI between halves A and B", f3(obs.ari_AB.mean(), 4), f3(nul.ari_AB.mean(), 4)),
+            ("Largest difference, in-sample (A)", mr(obs.in_max_gap), mr(nul.in_max_gap)),
+            ("Largest difference, held-out (B)", mr(obs.held_max_gap), mr(nul.held_max_gap)),
+            ("Largest ε², in-sample (A)", mr(obs.in_max_eps2), mr(nul.in_max_eps2)),
+            ("Largest ε², held-out (B)", mr(obs.held_max_eps2), mr(nul.held_max_eps2)),
+            ("Profile correlation, A vs B", f3(obs.profile_r.mean()), f3(nul.profile_r.mean())),
+            ("Reliability of individual preferences (r)", f3(rel.loc["real", "r_model_mean"]),
              f"{f3(rel.loc['permuted', 'r_model_mean'])} [{f3(rel.loc['permuted', 'r_model_q025'])}, "
              f"{f3(rel.loc['permuted', 'r_model_q975'])}]")]
     table("Table 3.2 Stability and replication of the subgroups",
           pd.DataFrame(rows, columns=["Measure", "Observed", "Permutation null"]),
-          note=("Stability: 200 subsamples of 80% of the participants. Replication: means over 50 random splits of each "
-                "participant's conversations into halves A and B, with the 2.5th and 97.5th percentiles in brackets; subgroups "
-                "formed on half A; significance by Kruskal–Wallis tests (equivalent to Mann–Whitney tests for two subgroups) "
-                "with Benjamini–Hochberg adjustment over 21 models; effect size ε² = H/(n − 1). "
+          note=("Stability: 200 subsamples of 80% of the participants. Replication: means [2.5th, 97.5th percentiles] over "
+                "50 splits into halves A and B, subgroups formed on A; ε² = H/(n − 1) of Kruskal–Wallis tests. "
                 "Reliability: null mean [95% range]."),
           slug="table3_2_replication")
 
 
 # ---------------------------------------------------------------- Table 3.3 baselines
+SHORT = {"Ablation: no reachability (kappa = 1)": "No reachability (κ = 1)", "Standard FCM (random init)": "FCM, random init",
+         "Agglomerative (Ward)": "Ward", "Spectral (behavioural graph)": "Spectral, current relation",
+         "Spectral (kNN on profiles)": "Spectral, kNN profiles", "HDBSCAN (data-driven c)": "HDBSCAN",
+         "Louvain (behavioural graph, data-driven c)": "Louvain, current relation"}
+
+
 def t_baselines():
     b = pd.read_csv(RES / "baselines.csv", index_col=0)
     rows = []
     for name, r in b.iterrows():
         if r.n_clusters < 2:
-            rows.append((name, "no clusters (all noise)", "–", "–", "–", f3(r.ari_vs_algorithm1)))
+            rows.append((SHORT.get(name, name), "no clusters (all noise)", "–", "–", "–", f3(r.ari_vs_algorithm1)))
             continue
         sizes = "/".join(str(int(x)) for x in json.loads(r.sizes.replace("'", '"')))
-        rows.append((name.replace("kappa", "κ"), sizes, f3(r.sil_euc), f3(r.sil_euc_null_mean), fp(r.sil_euc_p),
+        rows.append((SHORT.get(name, name), sizes, f3(r.sil_euc), f3(r.sil_euc_null_mean), fp(r.sil_euc_p),
                      "–" if name.startswith("Algorithm 1") else f3(r.ari_vs_algorithm1)))
     lv = b.loc[[n for n in b.index if n.startswith("Louvain")][0]]
     table("Table 3.3 Algorithm 1 and other clustering methods, each against its own permutation null",
-          pd.DataFrame(rows, columns=["Method", "Sizes", "Silhouette (Euclidean)", "Null mean", "p", "ARI with Algorithm 1"]),
-          note=("Silhouettes are computed on the same P-HFE profiles; 100 null replicates per method. All methods except "
+          pd.DataFrame(rows, columns=["Method", "Sizes", "Silhouette", "Null mean", "p", "ARI with Alg. 1"]),
+          note=("Euclidean silhouettes on the same P-HFE profiles; 100 null replicates per method. All methods except "
                 "HDBSCAN and Louvain use c = 2. Modularity of the Louvain communities on the current relation: "
                 f"{f3(lv.modularity)} (null mean {f3(lv.modularity_null_mean)}, p = {fp(lv.modularity_p)})."),
           slug="table3_3_baselines")
@@ -170,11 +164,10 @@ def t_external():
     names = {"region": "Region", "age": "Age", "gender": "Gender", "education": "Education", "employment": "Employment",
              "marital": "Marital status", "english": "English proficiency", "religion": "Religion", "ethnicity": "Ethnicity",
              "lm_familiarity": "Familiarity with LLMs", "lm_use": "Frequency of LLM use"}
-    rows = [(names[r.variable], f"{r.n:,}", r.groups, f3(r.cramers_v_cluster), fp(r.p_cluster), fp(r.p_cluster_holm),
-             f3(r.R2_profiles), fp(r.p_profiles), fp(r.p_profiles_holm)) for r in a.itertuples()]
+    rows = [(names[r.variable], f"{r.n:,}", r.groups, f3(r.cramers_v_cluster), fp(r.p_cluster_holm),
+             f3(r.R2_profiles), fp(r.p_profiles_holm)) for r in a.itertuples()]
     table("Table 3.4 Sociodemographic validation of the subgroups",
-          pd.DataFrame(rows, columns=["Attribute", "n", "Groups", "Cramér's V", "p", "p (Holm)",
-                                      "R² of profiles", "p", "p (Holm)"]),
+          pd.DataFrame(rows, columns=["Attribute", "n", "Groups", "Cramér's V", "p (Holm)", "R² of profiles", "p (Holm)"]),
           note=("Attributes were not used for clustering. Cramér's V: association with subgroup membership; R²: share of the "
                 "variation in preference profiles explained by the attribute (PERMANOVA). 999 permutations each."),
           slug="table3_4_external")
@@ -201,9 +194,9 @@ def t_sensitivity():
             ("Subgroup weights for μ = 0 to 1 (larger subgroup)", f"{mu['0.0']['weights'][0]:.3f} to {mu['1.0']['weights'][0]:.3f}"),
             ("Graded instead of pairwise encoding: modified silhouette (p)",
              f"{rob['indices']['mod_sil']:.3f} ({fp(rob['p']['mod_sil'])}); ARI with the main partition {rob['ari_vs_pairwise_partition']:.2f}")]
-    table("Table 3.5 Sensitivity to the balancing parameters and robustness checks", pd.DataFrame(rows, columns=["Measure", "Value"]),
+    table("Table S1 Sensitivity to the balancing parameters and robustness checks (supplementary)", pd.DataFrame(rows, columns=["Measure", "Value"]),
           note=f"Each configuration was compared with the same {n_null:,} permutation nulls as Table 3.1; the graded encoding with 200.",
-          slug="table3_5_sensitivity")
+          slug="tableS1_sensitivity")
 
 
 # ---------------------------------------------------------------- Table A1 representation
@@ -213,11 +206,11 @@ def t_representation():
     rows = [(names[x.variable], x.group, x.n, f3(x.tau_flat), f3(x.tau_consensus),
              f"{x.tau_null_mean:.3f} [{x.tau_null_q025:.3f}, {x.tau_null_q975:.3f}]", fp(x.p_underrepresented), fp(x.p_holm))
             for x in r.itertuples()]
-    table("Table A1 Representation of sociodemographic groups by the pooled and the SCO-FCM consensus rankings",
+    table("Table S2 Representation of sociodemographic groups by the pooled and the SCO-FCM consensus rankings (supplementary)",
           pd.DataFrame(rows, columns=["Attribute", "Group", "n", "τ, pooled", "τ, consensus",
                                       "τ, random group [95% range]", "p", "p (Holm)"]),
           note="Kendall's τ between a group's model ranking and the ranking named in the column; p tests whether the group is "
-               "represented worse than a random group of the same size (999 permutations).", slug="tableA1_representation")
+               "represented worse than a random group of the same size (999 permutations).", slug="tableS2_representation")
 
 
 def to_markdown(df):

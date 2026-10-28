@@ -8,99 +8,88 @@
 | Language models | 21 |
 | Conversations | 7,607 |
 | Opening-turn ratings (1–100) | 28,602 |
-| Pairwise outcomes derived from opening turns | 80,618 |
-| Opening turns with 4 / 3 / 2 models | 5,926 / 1,536 / 145 |
-| Share of tied outcomes | 5.7% |
-| Density of the participant × model profile | 68.7% |
-| Models rated per participant (mean) | 14.4 |
-| Outcomes per participant–model cell (median) | 3 |
-| Participants per model (min–max) | 521–936 |
-| Conversation types (unguided / values / controversy) | 2,925 / 2,350 / 2,332 |
+| Pairwise outcomes | 80,618 |
+| Outcomes per observed cell (median) | 3 |
 
 
 **Table 2.2 SCO-FCM components and their counterparts in this study**
 
 | Component | Baseline [5] | This study |
 |---|---|---|
-| Decision maker (DM) | Expert or stakeholder | PRISM participant who rated model responses |
-| Assessment | Probabilistic hesitant fuzzy element (P-HFE) | Win (1), tie (0.5), and loss (0) outcomes of a model in the participant's opening turns, with their relative frequencies |
-| Score of a P-HFE | Score function with a fluctuation penalty | Unchanged |
-| Background relation, weighted by ζ | Historical background correlation | Similarity of the stated importance of eight response attributes (survey) |
-| Current relation | Current research correlation | Jaccard similarity of the sets of models a participant chose as best |
-| κ | Weight of distance vs reachability in clustering and in the modified silhouette | Unchanged (0.6) |
-| μ | Weight of cohesion vs size in subgroup weights | Unchanged (0.5; 0–1 examined) |
-| Number of subgroups | c ∈ {2, …, 8}, maximum modified silhouette | Unchanged |
+| Decision maker (DM) | Expert or stakeholder | PRISM participant |
+| Assessment | Probabilistic hesitant fuzzy element (P-HFE) | Win (1), tie (0.5), and loss (0) outcomes in opening turns, with relative frequencies |
+| Background relation, weighted by ζ | Historical background correlation | Similarity of the stated importance of eight response attributes |
+| Current relation | Current research correlation | Jaccard similarity of the models chosen as best |
+| Score function, κ, μ, and c | Fluctuation penalty; distance vs reachability; cohesion vs size; c ∈ {2, …, 8} | Unchanged (κ = 0.6, μ = 0.5) |
 
 
 **Table 3.1 Cluster validity of the selected partition (c* = 2) against 1,000 permutation nulls**
 
 | Index | Observed | Null mean [95% range] | p |
 |---|---|---|---|
-| Modified silhouette at c* (selection criterion) | 0.042 | 0.037 [0.031, 0.042] | 0.042 |
-| Modified silhouette, best over c = 2–8 (selection-aware) | 0.042 | 0.037 [0.031, 0.043] | 0.045 |
+| Modified silhouette at c* | 0.042 | 0.037 [0.031, 0.042] | 0.042 |
+| Modified silhouette, best c (selection-aware) | 0.042 | 0.037 [0.031, 0.043] | 0.045 |
 | Silhouette, Euclidean | 0.027 | 0.021 [0.017, 0.025] | 0.003 |
 | Silhouette, current relation | 0.064 | 0.060 [0.050, 0.070] | 0.254 |
-| Normalized fuzzy partition coefficient | 0.0022 | 0.0015 [0.0011, 0.0019] | < 0.001 |
-| Xie–Beni index (lower is better) | 405.6 | 743.7 [527.9, 1053.7] | < 0.001 |
-| Davies–Bouldin index (lower is better) | 6.126 | 6.693 [6.118, 7.274] | 0.031 |
-| Calinski–Harabasz index | 32.1 | 27.1 [22.7, 32.6] | 0.035 |
+| Normalized FPC | 0.0022 | 0.0015 [0.0011, 0.0019] | < 0.001 |
+| Xie–Beni (lower is better) | 405.6 | 743.7 [527.9, 1053.7] | < 0.001 |
+| Davies–Bouldin (lower is better) | 6.126 | 6.693 [6.118, 7.274] | 0.031 |
+| Calinski–Harabasz | 32.1 | 27.1 [22.7, 32.6] | 0.035 |
 
-*Note.* One-sided permutation p-values. The selection-aware row compares the best value over c = 2–8 with the best value attained on each null dataset, as in Table 3.5. The null selected c* = 2 in 86% of replicates.
+*Note.* One-sided permutation p-values. The selection-aware row compares the best value over c = 2–8 with the best value attained on each null dataset. The null selected c* = 2 in 86% of replicates.
 
 **Table 3.2 Stability and replication of the subgroups**
 
 | Measure | Observed | Permutation null |
 |---|---|---|
-| Stability: ARI with the full-data partition, 80% subsamples (median) | 0.777 | – |
-| Stability: Jaccard similarity of the smaller subgroup (median) | 0.873 | – |
-| Replication: ARI between the partitions of halves A and B | −0.0001 | 0.0003 |
-| Largest subgroup difference, in-sample (half A) | 0.506 [0.371, 0.563] | 0.464 [0.342, 0.553] |
-| Largest subgroup difference, held-out (half B) | 0.066 [0.042, 0.094] | 0.065 [0.039, 0.089] |
-| Largest effect size ε², in-sample (half A) | 0.375 [0.196, 0.491] | 0.323 [0.187, 0.450] |
-| Largest effect size ε², held-out (half B) | 0.010 [0.005, 0.018] | 0.009 [0.004, 0.018] |
-| Models (of 21) with a significant difference, in-sample | 12.16 | 11.32 |
-| Models (of 21) with a significant difference, held-out | 0.06 | 0.06 |
-| Correlation of subgroup preference profiles, A vs B | 0.129 | 0.021 |
-| Split-half reliability of individual preferences (r per model) | 0.037 | 0.000 [−0.022, 0.027] |
+| Stability: ARI with the full-data partition (median) | 0.777 | – |
+| Stability: Jaccard, smaller subgroup (median) | 0.873 | – |
+| Replication: ARI between halves A and B | −0.0001 | 0.0003 |
+| Largest difference, in-sample (A) | 0.506 [0.371, 0.563] | 0.464 [0.342, 0.553] |
+| Largest difference, held-out (B) | 0.066 [0.042, 0.094] | 0.065 [0.039, 0.089] |
+| Largest ε², in-sample (A) | 0.375 [0.196, 0.491] | 0.323 [0.187, 0.450] |
+| Largest ε², held-out (B) | 0.010 [0.005, 0.018] | 0.009 [0.004, 0.018] |
+| Profile correlation, A vs B | 0.129 | 0.021 |
+| Reliability of individual preferences (r) | 0.037 | 0.000 [−0.022, 0.027] |
 
-*Note.* Stability: 200 subsamples of 80% of the participants. Replication: means over 50 random splits of each participant's conversations into halves A and B, with the 2.5th and 97.5th percentiles in brackets; subgroups formed on half A; significance by Kruskal–Wallis tests (equivalent to Mann–Whitney tests for two subgroups) with Benjamini–Hochberg adjustment over 21 models; effect size ε² = H/(n − 1). Reliability: null mean [95% range].
+*Note.* Stability: 200 subsamples of 80% of the participants. Replication: means [2.5th, 97.5th percentiles] over 50 splits into halves A and B, subgroups formed on A; ε² = H/(n − 1) of Kruskal–Wallis tests. Reliability: null mean [95% range].
 
 **Table 3.3 Algorithm 1 and other clustering methods, each against its own permutation null**
 
-| Method | Sizes | Silhouette (Euclidean) | Null mean | p | ARI with Algorithm 1 |
+| Method | Sizes | Silhouette | Null mean | p | ARI with Alg. 1 |
 |---|---|---|---|---|---|
 | Algorithm 1 (SCO-FCM) | 723/544 | 0.027 | 0.021 | 0.020 | – |
-| Ablation: no reachability (κ = 1) | 683/584 | 0.051 | 0.046 | 0.020 | 0.227 |
-| Standard FCM (random init) | 676/591 | 0.051 | 0.045 | 0.020 | 0.217 |
+| No reachability (κ = 1) | 683/584 | 0.051 | 0.046 | 0.020 | 0.227 |
+| FCM, random init | 676/591 | 0.051 | 0.045 | 0.020 | 0.217 |
 | K-Means | 954/313 | 0.058 | 0.060 | 0.584 | 0.113 |
 | GMM (diagonal) | 958/309 | 0.057 | 0.057 | 0.535 | 0.111 |
-| Agglomerative (Ward) | 1152/115 | 0.032 | 0.041 | 0.832 | −0.001 |
-| Spectral (behavioural graph) | 686/581 | 0.022 | 0.020 | 0.099 | 0.499 |
-| Spectral (kNN on profiles) | 935/332 | 0.055 | 0.055 | 0.574 | −0.001 |
-| HDBSCAN (data-driven c) | no clusters (all noise) | – | – | – | 0.000 |
-| Louvain (behavioural graph, data-driven c) | 448/370/227/222 | 0.014 | 0.014 | 0.594 | 0.006 |
+| Ward | 1152/115 | 0.032 | 0.041 | 0.832 | −0.001 |
+| Spectral, current relation | 686/581 | 0.022 | 0.020 | 0.099 | 0.499 |
+| Spectral, kNN profiles | 935/332 | 0.055 | 0.055 | 0.574 | −0.001 |
+| HDBSCAN | no clusters (all noise) | – | – | – | 0.000 |
+| Louvain, current relation | 448/370/227/222 | 0.014 | 0.014 | 0.594 | 0.006 |
 
-*Note.* Silhouettes are computed on the same P-HFE profiles; 100 null replicates per method. All methods except HDBSCAN and Louvain use c = 2. Modularity of the Louvain communities on the current relation: 0.096 (null mean 0.097, p = 0.733).
+*Note.* Euclidean silhouettes on the same P-HFE profiles; 100 null replicates per method. All methods except HDBSCAN and Louvain use c = 2. Modularity of the Louvain communities on the current relation: 0.096 (null mean 0.097, p = 0.733).
 
 **Table 3.4 Sociodemographic validation of the subgroups**
 
-| Attribute | n | Groups | Cramér's V | p | p (Holm) | R² of profiles | p | p (Holm) |
-|---|---|---|---|---|---|---|---|---|
-| Region | 1,264 | 9 | 0.063 | 0.753 | 1.000 | 0.008 | 0.059 | 0.649 |
-| Age | 1,267 | 6 | 0.087 | 0.075 | 0.750 | 0.005 | 0.143 | 1.000 |
-| Gender | 1,267 | 3 | 0.033 | 0.505 | 1.000 | 0.002 | 0.081 | 0.810 |
-| Education | 1,225 | 5 | 0.050 | 0.524 | 1.000 | 0.003 | 0.436 | 1.000 |
-| Employment | 1,251 | 7 | 0.070 | 0.407 | 1.000 | 0.005 | 0.639 | 1.000 |
-| Marital status | 1,233 | 3 | 0.096 | 0.005 | 0.055 | 0.002 | 0.292 | 1.000 |
-| English proficiency | 1,262 | 4 | 0.027 | 0.812 | 1.000 | 0.002 | 0.763 | 1.000 |
-| Religion | 1,216 | 5 | 0.031 | 0.894 | 1.000 | 0.003 | 0.696 | 1.000 |
-| Ethnicity | 1,204 | 6 | 0.072 | 0.278 | 1.000 | 0.004 | 0.501 | 1.000 |
-| Familiarity with LLMs | 1,267 | 3 | 0.063 | 0.094 | 0.756 | 0.002 | 0.322 | 1.000 |
-| Frequency of LLM use | 1,063 | 5 | 0.086 | 0.084 | 0.756 | 0.004 | 0.446 | 1.000 |
+| Attribute | n | Groups | Cramér's V | p (Holm) | R² of profiles | p (Holm) |
+|---|---|---|---|---|---|---|
+| Region | 1,264 | 9 | 0.063 | 1.000 | 0.008 | 0.649 |
+| Age | 1,267 | 6 | 0.087 | 0.750 | 0.005 | 1.000 |
+| Gender | 1,267 | 3 | 0.033 | 1.000 | 0.002 | 0.810 |
+| Education | 1,225 | 5 | 0.050 | 1.000 | 0.003 | 1.000 |
+| Employment | 1,251 | 7 | 0.070 | 1.000 | 0.005 | 1.000 |
+| Marital status | 1,233 | 3 | 0.096 | 0.055 | 0.002 | 1.000 |
+| English proficiency | 1,262 | 4 | 0.027 | 1.000 | 0.002 | 1.000 |
+| Religion | 1,216 | 5 | 0.031 | 1.000 | 0.003 | 1.000 |
+| Ethnicity | 1,204 | 6 | 0.072 | 1.000 | 0.004 | 1.000 |
+| Familiarity with LLMs | 1,267 | 3 | 0.063 | 0.756 | 0.002 | 1.000 |
+| Frequency of LLM use | 1,063 | 5 | 0.086 | 0.756 | 0.004 | 1.000 |
 
 *Note.* Attributes were not used for clustering. Cramér's V: association with subgroup membership; R²: share of the variation in preference profiles explained by the attribute (PERMANOVA). 999 permutations each.
 
-**Table 3.5 Sensitivity to the balancing parameters and robustness checks**
+**Table S1 Sensitivity to the balancing parameters and robustness checks (supplementary)**
 
 | Measure | Value |
 |---|---|
@@ -117,7 +106,7 @@
 
 *Note.* Each configuration was compared with the same 1,000 permutation nulls as Table 3.1; the graded encoding with 200.
 
-**Table A1 Representation of sociodemographic groups by the pooled and the SCO-FCM consensus rankings**
+**Table S2 Representation of sociodemographic groups by the pooled and the SCO-FCM consensus rankings (supplementary)**
 
 | Attribute | Group | n | τ, pooled | τ, consensus | τ, random group [95% range] | p | p (Holm) |
 |---|---|---|---|---|---|---|---|

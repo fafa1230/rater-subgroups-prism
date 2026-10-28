@@ -9,26 +9,26 @@
   },
   "table3_1_validity": {
     "title": "Table 3.1 Cluster validity of the selected partition (c* = 2) against 1,000 permutation nulls",
-    "note": "One-sided permutation p-values. The selection-aware row compares the best value over c = 2–8 with the best value attained on each null dataset, as in Table 3.5. The null selected c* = 2 in 86% of replicates."
+    "note": "One-sided permutation p-values. The selection-aware row compares the best value over c = 2–8 with the best value attained on each null dataset. The null selected c* = 2 in 86% of replicates."
   },
   "table3_2_replication": {
     "title": "Table 3.2 Stability and replication of the subgroups",
-    "note": "Stability: 200 subsamples of 80% of the participants. Replication: means over 50 random splits of each participant's conversations into halves A and B, with the 2.5th and 97.5th percentiles in brackets; subgroups formed on half A; significance by Kruskal–Wallis tests (equivalent to Mann–Whitney tests for two subgroups) with Benjamini–Hochberg adjustment over 21 models; effect size ε² = H/(n − 1). Reliability: null mean [95% range]."
+    "note": "Stability: 200 subsamples of 80% of the participants. Replication: means [2.5th, 97.5th percentiles] over 50 splits into halves A and B, subgroups formed on A; ε² = H/(n − 1) of Kruskal–Wallis tests. Reliability: null mean [95% range]."
   },
   "table3_3_baselines": {
     "title": "Table 3.3 Algorithm 1 and other clustering methods, each against its own permutation null",
-    "note": "Silhouettes are computed on the same P-HFE profiles; 100 null replicates per method. All methods except HDBSCAN and Louvain use c = 2. Modularity of the Louvain communities on the current relation: 0.096 (null mean 0.097, p = 0.733)."
+    "note": "Euclidean silhouettes on the same P-HFE profiles; 100 null replicates per method. All methods except HDBSCAN and Louvain use c = 2. Modularity of the Louvain communities on the current relation: 0.096 (null mean 0.097, p = 0.733)."
   },
   "table3_4_external": {
     "title": "Table 3.4 Sociodemographic validation of the subgroups",
     "note": "Attributes were not used for clustering. Cramér's V: association with subgroup membership; R²: share of the variation in preference profiles explained by the attribute (PERMANOVA). 999 permutations each."
   },
-  "table3_5_sensitivity": {
-    "title": "Table 3.5 Sensitivity to the balancing parameters and robustness checks",
+  "tableS1_sensitivity": {
+    "title": "Table S1 Sensitivity to the balancing parameters and robustness checks (supplementary)",
     "note": "Each configuration was compared with the same 1,000 permutation nulls as Table 3.1; the graded encoding with 200."
   },
-  "tableA1_representation": {
-    "title": "Table A1 Representation of sociodemographic groups by the pooled and the SCO-FCM consensus rankings",
+  "tableS2_representation": {
+    "title": "Table S2 Representation of sociodemographic groups by the pooled and the SCO-FCM consensus rankings (supplementary)",
     "note": "Kendall's τ between a group's model ranking and the ranking named in the column; p tests whether the group is represented worse than a random group of the same size (999 permutations)."
   }
 }
