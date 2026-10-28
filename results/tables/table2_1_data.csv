@@ -1,0 +1,13 @@
+Item,Value
+Participants (six or more conversations),"1,267"
+Language models,21
+Conversations,"7,607"
+Opening-turn ratings (1–100),"28,602"
+Pairwise outcomes derived from opening turns,"80,618"
+Opening turns with 4 / 3 / 2 models,"5,926 / 1,536 / 145"
+Share of tied outcomes,5.7%
+Density of the participant × model profile,68.7%
+Models rated per participant (mean),14.4
+Outcomes per participant–model cell (median),3
+Participants per model (min–max),521–936
+Conversation types (unguided / values / controversy),"2,925 / 2,350 / 2,332"

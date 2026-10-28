@@ -1,0 +1,11 @@
+Measure,Value
+"Configurations (ζ, κ ∈ {0, 0.1, …, 1}; μ = 0.5)",121
+Selected number of subgroups,"c* = 2 in 104, c* = 3 in 17"
+Modified silhouette at c* (min–max),0.024–0.067
+"Configurations with p < 0.05, unadjusted","37 (31%), all with κ ≥ 0.6"
+Configurations with p < 0.05 after Benjamini–Hochberg (121 tests),0
+"Smallest p, unadjusted / adjusted",0.003 / 0.116
+"ARI with the partition at ζ = 0.4, κ = 0.6 (median; min–max)",0.77; 0.02–1.00
+"Kendall's τ, consensus vs pooled ranking (min over configurations)",0.962
+Subgroup weights for μ = 0 to 1 (larger subgroup),0.571 to 0.535
+Graded instead of pairwise encoding: modified silhouette (p),0.033 (0.010); ARI with the main partition 0.35

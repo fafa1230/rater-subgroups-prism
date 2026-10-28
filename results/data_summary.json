@@ -1,0 +1,42 @@
+{
+  "participants": 1267,
+  "models": 21,
+  "conversations": 7607,
+  "opening_ratings": 28602,
+  "pairwise_outcomes": 80618,
+  "models_per_opening_turn": {
+    "2": 145,
+    "3": 1536,
+    "4": 5926
+  },
+  "opening_turns_with_equal_scores": 0.18929932956487447,
+  "tie_share_of_outcomes": 0.057257684388101915,
+  "density": 0.6869996617431503,
+  "models_rated_per_participant_mean": 14.426992896606157,
+  "outcomes_per_cell_median": 3.0,
+  "share_cells_single_outcome": 0.005908419497784343,
+  "participants_per_model_min_max": [
+    521,
+    936
+  ],
+  "conversation_types": {
+    "unguided": 2925,
+    "values guided": 2350,
+    "controversy guided": 2332
+  },
+  "external_n": {
+    "region": 1264,
+    "age": 1267,
+    "gender": 1267,
+    "education": 1225,
+    "employment": 1251,
+    "marital": 1233,
+    "english": 1262,
+    "religion": 1216,
+    "ethnicity": 1204,
+    "lm_familiarity": 1267,
+    "lm_use": 1063
+  },
+  "us_rep": 218,
+  "uk_rep": 236
+}

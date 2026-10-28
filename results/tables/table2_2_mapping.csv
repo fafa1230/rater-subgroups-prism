@@ -1,0 +1,9 @@
+Component,Baseline [5],This study
+Decision maker (DM),Expert or stakeholder,PRISM participant who rated model responses
+Assessment,Probabilistic hesitant fuzzy element (P-HFE),"Win (1), tie (0.5), and loss (0) outcomes of a model in the participant's opening turns, with their relative frequencies"
+Score of a P-HFE,Score function with a fluctuation penalty,Unchanged
+"Background relation, weighted by ζ",Historical background correlation,Similarity of the stated importance of eight response attributes (survey)
+Current relation,Current research correlation,Jaccard similarity of the sets of models a participant chose as best
+κ,Weight of distance vs reachability in clustering and in the modified silhouette,Unchanged (0.6)
+μ,Weight of cohesion vs size in subgroup weights,Unchanged (0.5; 0–1 examined)
+Number of subgroups,"c ∈ {2, …, 8}, maximum modified silhouette",Unchanged

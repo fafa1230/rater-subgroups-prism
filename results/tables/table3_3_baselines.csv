@@ -1,0 +1,10 @@
+Method,Sizes,Silhouette (Euclidean),Null mean,p,ARI with Algorithm 1
+Algorithm 1 (SCO-FCM),723/544,0.027,0.021,0.020,–
+Ablation: no reachability (κ = 1),683/584,0.051,0.046,0.020,0.227
+Standard FCM (random init),676/591,0.051,0.045,0.020,0.217
+K-Means,954/313,0.058,0.060,0.584,0.113
+GMM (diagonal),958/309,0.057,0.057,0.535,0.111
+Agglomerative (Ward),1152/115,0.032,0.041,0.832,−0.001
+Spectral (behavioural graph),686/581,0.022,0.020,0.099,0.499
+Spectral (kNN on profiles),935/332,0.055,0.055,0.574,−0.001
+HDBSCAN (data-driven c),no clusters (all noise),–,–,–,0.000

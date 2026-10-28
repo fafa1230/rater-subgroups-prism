@@ -1,0 +1,9 @@
+Index,Observed,Null mean [95% range],p
+Modified silhouette at c* (selection criterion),0.042,"0.037 [0.031, 0.042]",0.042
+"Modified silhouette, best over c = 2–8 (selection-aware)",0.042,"0.037 [0.031, 0.043]",0.045
+"Silhouette, Euclidean",0.027,"0.021 [0.017, 0.025]",0.003
+"Silhouette, current relation",0.064,"0.060 [0.050, 0.070]",0.254
+Normalized fuzzy partition coefficient,0.0022,"0.0015 [0.0011, 0.0019]",< 0.001
+Xie–Beni index (lower is better),405.6,"743.7 [527.9, 1053.7]",< 0.001
+Davies–Bouldin index (lower is better),6.126,"6.693 [6.118, 7.274]",0.031
+Calinski–Harabasz index,32.1,"27.1 [22.7, 32.6]",0.035
