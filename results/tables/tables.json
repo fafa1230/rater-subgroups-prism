@@ -13,11 +13,11 @@
   },
   "table3_2_replication": {
     "title": "Table 3.2 Stability and replication of the subgroups",
-    "note": "Stability: 200 subsamples of 80% of the participants. Replication: means over 50 random splits of each participant's conversations into halves A and B; subgroups formed on half A; significance by Kruskal–Wallis tests with Benjamini–Hochberg adjustment over 21 models. Reliability: null mean [95% range]."
+    "note": "Stability: 200 subsamples of 80% of the participants. Replication: means over 50 random splits of each participant's conversations into halves A and B, with the 2.5th and 97.5th percentiles in brackets; subgroups formed on half A; significance by Kruskal–Wallis tests (equivalent to Mann–Whitney tests for two subgroups) with Benjamini–Hochberg adjustment over 21 models; effect size ε² = H/(n − 1). Reliability: null mean [95% range]."
   },
   "table3_3_baselines": {
-    "title": "Table 3.3 Algorithm 1 and other clustering methods at c = 2, each against its own permutation null",
-    "note": "Silhouettes are computed on the same P-HFE profiles; 100 null replicates per method."
+    "title": "Table 3.3 Algorithm 1 and other clustering methods, each against its own permutation null",
+    "note": "Silhouettes are computed on the same P-HFE profiles; 100 null replicates per method. All methods except HDBSCAN and Louvain use c = 2. Modularity of the Louvain communities on the current relation: 0.096 (null mean 0.097, p = 0.733)."
   },
   "table3_4_external": {
     "title": "Table 3.4 Sociodemographic validation of the subgroups",

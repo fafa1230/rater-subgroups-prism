@@ -54,16 +54,18 @@
 | Stability: ARI with the full-data partition, 80% subsamples (median) | 0.777 | – |
 | Stability: Jaccard similarity of the smaller subgroup (median) | 0.873 | – |
 | Replication: ARI between the partitions of halves A and B | −0.0001 | 0.0003 |
-| Largest subgroup difference, in-sample (half A) | 0.506 | 0.464 |
-| Largest subgroup difference, held-out (half B) | 0.066 | 0.065 |
+| Largest subgroup difference, in-sample (half A) | 0.506 [0.371, 0.563] | 0.464 [0.342, 0.553] |
+| Largest subgroup difference, held-out (half B) | 0.066 [0.042, 0.094] | 0.065 [0.039, 0.089] |
+| Largest effect size ε², in-sample (half A) | 0.375 [0.196, 0.491] | 0.323 [0.187, 0.450] |
+| Largest effect size ε², held-out (half B) | 0.010 [0.005, 0.018] | 0.009 [0.004, 0.018] |
 | Models (of 21) with a significant difference, in-sample | 12.16 | 11.32 |
 | Models (of 21) with a significant difference, held-out | 0.06 | 0.06 |
 | Correlation of subgroup preference profiles, A vs B | 0.129 | 0.021 |
 | Split-half reliability of individual preferences (r per model) | 0.037 | 0.000 [−0.022, 0.027] |
 
-*Note.* Stability: 200 subsamples of 80% of the participants. Replication: means over 50 random splits of each participant's conversations into halves A and B; subgroups formed on half A; significance by Kruskal–Wallis tests with Benjamini–Hochberg adjustment over 21 models. Reliability: null mean [95% range].
+*Note.* Stability: 200 subsamples of 80% of the participants. Replication: means over 50 random splits of each participant's conversations into halves A and B, with the 2.5th and 97.5th percentiles in brackets; subgroups formed on half A; significance by Kruskal–Wallis tests (equivalent to Mann–Whitney tests for two subgroups) with Benjamini–Hochberg adjustment over 21 models; effect size ε² = H/(n − 1). Reliability: null mean [95% range].
 
-**Table 3.3 Algorithm 1 and other clustering methods at c = 2, each against its own permutation null**
+**Table 3.3 Algorithm 1 and other clustering methods, each against its own permutation null**
 
 | Method | Sizes | Silhouette (Euclidean) | Null mean | p | ARI with Algorithm 1 |
 |---|---|---|---|---|---|
@@ -76,8 +78,9 @@
 | Spectral (behavioural graph) | 686/581 | 0.022 | 0.020 | 0.099 | 0.499 |
 | Spectral (kNN on profiles) | 935/332 | 0.055 | 0.055 | 0.574 | −0.001 |
 | HDBSCAN (data-driven c) | no clusters (all noise) | – | – | – | 0.000 |
+| Louvain (behavioural graph, data-driven c) | 448/370/227/222 | 0.014 | 0.014 | 0.594 | 0.006 |
 
-*Note.* Silhouettes are computed on the same P-HFE profiles; 100 null replicates per method.
+*Note.* Silhouettes are computed on the same P-HFE profiles; 100 null replicates per method. All methods except HDBSCAN and Louvain use c = 2. Modularity of the Louvain communities on the current relation: 0.096 (null mean 0.097, p = 0.733).
 
 **Table 3.4 Sociodemographic validation of the subgroups**
 

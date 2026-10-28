@@ -8,3 +8,4 @@ Agglomerative (Ward),1152/115,0.032,0.041,0.832,−0.001
 Spectral (behavioural graph),686/581,0.022,0.020,0.099,0.499
 Spectral (kNN on profiles),935/332,0.055,0.055,0.574,−0.001
 HDBSCAN (data-driven c),no clusters (all noise),–,–,–,0.000
+"Louvain (behavioural graph, data-driven c)",448/370/227/222,0.014,0.014,0.594,0.006

@@ -2,8 +2,10 @@ Measure,Observed,Permutation null
 "Stability: ARI with the full-data partition, 80% subsamples (median)",0.777,–
 Stability: Jaccard similarity of the smaller subgroup (median),0.873,–
 Replication: ARI between the partitions of halves A and B,−0.0001,0.0003
-"Largest subgroup difference, in-sample (half A)",0.506,0.464
-"Largest subgroup difference, held-out (half B)",0.066,0.065
+"Largest subgroup difference, in-sample (half A)","0.506 [0.371, 0.563]","0.464 [0.342, 0.553]"
+"Largest subgroup difference, held-out (half B)","0.066 [0.042, 0.094]","0.065 [0.039, 0.089]"
+"Largest effect size ε², in-sample (half A)","0.375 [0.196, 0.491]","0.323 [0.187, 0.450]"
+"Largest effect size ε², held-out (half B)","0.010 [0.005, 0.018]","0.009 [0.004, 0.018]"
 "Models (of 21) with a significant difference, in-sample",12.16,11.32
 "Models (of 21) with a significant difference, held-out",0.06,0.06
 "Correlation of subgroup preference profiles, A vs B",0.129,0.021

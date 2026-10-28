@@ -118,11 +118,16 @@ def t_replication():
     s = pd.read_csv(RES / "split.csv")
     rel = pd.read_csv(RES / "reliability_summary.csv").set_index("kind")
     obs, nul = s[s.kind == "real"], s[s.kind == "permuted"]
+
+    def mr(x):                                       # mean [2.5th, 97.5th percentile] over the splits
+        return f"{f3(x.mean())} [{f3(x.quantile(.025))}, {f3(x.quantile(.975))}]"
     rows = [("Stability: ARI with the full-data partition, 80% subsamples (median)", f3(st.ari.median()), "–"),
             ("Stability: Jaccard similarity of the smaller subgroup (median)", f3(st.jac_min.median()), "–"),
             ("Replication: ARI between the partitions of halves A and B", f3(obs.ari_AB.mean(), 4), f3(nul.ari_AB.mean(), 4)),
-            ("Largest subgroup difference, in-sample (half A)", f3(obs.in_max_gap.mean()), f3(nul.in_max_gap.mean())),
-            ("Largest subgroup difference, held-out (half B)", f3(obs.held_max_gap.mean()), f3(nul.held_max_gap.mean())),
+            ("Largest subgroup difference, in-sample (half A)", mr(obs.in_max_gap), mr(nul.in_max_gap)),
+            ("Largest subgroup difference, held-out (half B)", mr(obs.held_max_gap), mr(nul.held_max_gap)),
+            ("Largest effect size ε², in-sample (half A)", mr(obs.in_max_eps2), mr(nul.in_max_eps2)),
+            ("Largest effect size ε², held-out (half B)", mr(obs.held_max_eps2), mr(nul.held_max_eps2)),
             ("Models (of 21) with a significant difference, in-sample", f3(obs.in_sig_bh.mean(), 2), f3(nul.in_sig_bh.mean(), 2)),
             ("Models (of 21) with a significant difference, held-out", f3(obs.held_sig_bh.mean(), 2), f3(nul.held_sig_bh.mean(), 2)),
             ("Correlation of subgroup preference profiles, A vs B", f3(obs.profile_r.mean()), f3(nul.profile_r.mean())),
@@ -132,8 +137,10 @@ def t_replication():
     table("Table 3.2 Stability and replication of the subgroups",
           pd.DataFrame(rows, columns=["Measure", "Observed", "Permutation null"]),
           note=("Stability: 200 subsamples of 80% of the participants. Replication: means over 50 random splits of each "
-                "participant's conversations into halves A and B; subgroups formed on half A; significance by Kruskal–Wallis "
-                "tests with Benjamini–Hochberg adjustment over 21 models. Reliability: null mean [95% range]."),
+                "participant's conversations into halves A and B, with the 2.5th and 97.5th percentiles in brackets; subgroups "
+                "formed on half A; significance by Kruskal–Wallis tests (equivalent to Mann–Whitney tests for two subgroups) "
+                "with Benjamini–Hochberg adjustment over 21 models; effect size ε² = H/(n − 1). "
+                "Reliability: null mean [95% range]."),
           slug="table3_2_replication")
 
 
@@ -148,9 +155,13 @@ def t_baselines():
         sizes = "/".join(str(int(x)) for x in json.loads(r.sizes.replace("'", '"')))
         rows.append((name.replace("kappa", "κ"), sizes, f3(r.sil_euc), f3(r.sil_euc_null_mean), fp(r.sil_euc_p),
                      "–" if name.startswith("Algorithm 1") else f3(r.ari_vs_algorithm1)))
-    table("Table 3.3 Algorithm 1 and other clustering methods at c = 2, each against its own permutation null",
+    lv = b.loc[[n for n in b.index if n.startswith("Louvain")][0]]
+    table("Table 3.3 Algorithm 1 and other clustering methods, each against its own permutation null",
           pd.DataFrame(rows, columns=["Method", "Sizes", "Silhouette (Euclidean)", "Null mean", "p", "ARI with Algorithm 1"]),
-          note="Silhouettes are computed on the same P-HFE profiles; 100 null replicates per method.", slug="table3_3_baselines")
+          note=("Silhouettes are computed on the same P-HFE profiles; 100 null replicates per method. All methods except "
+                "HDBSCAN and Louvain use c = 2. Modularity of the Louvain communities on the current relation: "
+                f"{f3(lv.modularity)} (null mean {f3(lv.modularity_null_mean)}, p = {fp(lv.modularity_p)})."),
+          slug="table3_3_baselines")
 
 
 # ---------------------------------------------------------------- Table 3.4 external validation

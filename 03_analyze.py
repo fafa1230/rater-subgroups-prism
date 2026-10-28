@@ -6,6 +6,7 @@
     python -I 03_analyze.py split       # split-half replication and held-out tests (real and null)
     python -I 03_analyze.py reliability # split-half consistency of individual preferences (no clustering)
     python -I 03_analyze.py baselines   # other clustering methods, each against its own null
+    python -I 03_analyze.py exposure    # whether the models a participant met depend on the participant
     python -I 03_analyze.py external    # sociodemographic validation and representation of groups
     python -I 03_analyze.py relative    # robustness: graded instead of pairwise P-HFE encoding
     python -I 03_analyze.py membership  # largest fuzzy membership, real and null
@@ -22,6 +23,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+import networkx as nx  # noqa: E402
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 from scipy.stats import kendalltau, kruskal  # noqa: E402
@@ -264,6 +266,25 @@ def stage_reliability():
 
 
 # ---------------------------------------------------------------- baselines
+def behavioural_graph(d):
+    W = d["S_curr"].copy()
+    np.fill_diagonal(W, 0)
+    return W
+
+
+def louvain_labels(d):
+    """Louvain community detection on the weighted behavioural graph; the number of communities is data-driven."""
+    lab = np.empty(len(d["S_curr"]), int)
+    for c, nodes in enumerate(nx.community.louvain_communities(nx.from_numpy_array(behavioural_graph(d)), seed=0)):
+        lab[list(nodes)] = c
+    return lab
+
+
+def modularity(W, lab):
+    k, m2 = W.sum(1), W.sum()
+    return float(sum(W[np.ix_(lab == c, lab == c)].sum() / m2 - (k[lab == c].sum() / m2) ** 2 for c in np.unique(lab)))
+
+
 def baseline_labels(d, k, fast=False):
     X = d["F"]
     prio = A1.priority(d)
@@ -278,6 +299,7 @@ def baseline_labels(d, k, fast=False):
            "Spectral (kNN on profiles)": SpectralClustering(k, affinity="nearest_neighbors", n_neighbors=15, random_state=0).fit_predict(X)}
     if not fast:
         out["HDBSCAN (data-driven c)"] = HDBSCAN(min_cluster_size=20).fit_predict(X)
+        out["Louvain (behavioural graph, data-driven c)"] = louvain_labels(d)
     return out
 
 
@@ -288,12 +310,13 @@ def partition_indices(d, lab):
     r = {"n_clusters": int(k), "noise": int((~core).sum()),
          "sizes": sorted(np.bincount(labs - labs.min()).tolist(), reverse=True) if k else []}
     if k < 2:
-        return r | {"sil_euc": np.nan, "sil_reach": np.nan, "ch": np.nan}
+        return r | {"sil_euc": np.nan, "sil_reach": np.nan, "ch": np.nan, "modularity": np.nan}
     D = 1.0 - d["S_curr"]
     np.fill_diagonal(D, 0)
     r["sil_euc"] = float(silhouette_score(d["F"][core], labs))
     r["sil_reach"] = float(silhouette_score(D[np.ix_(core, core)], labs, metric="precomputed"))
     r["ch"] = float(calinski_harabasz_score(d["F"][core], labs))
+    r["modularity"] = modularity(behavioural_graph(d)[np.ix_(core, core)], labs)
     return r
 
 
@@ -308,19 +331,40 @@ def stage_baselines():
         d = build(reassign_conversations(OP, rng))
         for name, lab in baseline_labels(d, c_star).items():
             ix = partition_indices(d, lab)
-            null[name].append((ix["sil_euc"], ix["ch"]))
+            null[name].append((ix["sil_euc"], ix["ch"], ix["modularity"]))
         if b % 25 == 0:
             log("baseline null", b)
     for name in rows:
         a = np.array(null[name], float)
-        for j, key in enumerate(("sil_euc", "ch")):
+        for j, key in enumerate(("sil_euc", "ch", "modularity")):
             v = a[:, j][np.isfinite(a[:, j])]
             rows[name][f"{key}_null_mean"] = float(v.mean()) if len(v) else np.nan
             rows[name][f"{key}_p"] = p_upper(rows[name][key], v) if len(v) and np.isfinite(rows[name][key]) else np.nan
     tab = pd.DataFrame(rows).T
     tab.to_csv(OUT / "baselines.csv")
     log("\n" + tab[["n_clusters", "noise", "sizes", "sil_euc", "sil_euc_null_mean", "sil_euc_p", "sil_reach", "ch",
-                    "ch_null_mean", "ch_p", "ari_vs_algorithm1"]].to_string())
+                    "ch_null_mean", "ch_p", "modularity", "modularity_null_mean", "modularity_p",
+                    "ari_vs_algorithm1"]].to_string())
+
+
+# ---------------------------------------------------------------- exposure to models
+def exposure_chi2(op):
+    """Dispersion of the participant x model exposure counts (opening turns in which a model appeared)."""
+    E = pd.crosstab(op["user_id"], op["model_name"]).to_numpy(float)
+    expected = E.sum(1, keepdims=True) * E.sum(0, keepdims=True) / E.sum()
+    return float(((E - expected) ** 2 / expected).sum())
+
+
+def stage_exposure():
+    """Whether the models a participant met depend on the participant: observed dispersion against
+    conversations dealt out at random, as in the permutation null."""
+    rng = np.random.default_rng(config.SEED + 10)
+    real = exposure_chi2(OP)
+    null = np.array([exposure_chi2(reassign_conversations(OP, rng)) for _ in range(config.N_NULL)])
+    res = {"chi2": real, "null_mean": float(null.mean()), "null_q025": float(np.quantile(null, .025)),
+           "null_q975": float(np.quantile(null, .975)), "p_upper": p_upper(real, null), "n_null": config.N_NULL}
+    dump("exposure.json", res)
+    log(res)
 
 
 # ---------------------------------------------------------------- external validation
@@ -511,5 +555,6 @@ def stage_relative():
 
 if __name__ == "__main__":
     {"main": stage_main, "validity": stage_validity, "stability": stage_stability, "split": stage_split,
-     "reliability": stage_reliability, "baselines": stage_baselines, "external": stage_external,
+     "reliability": stage_reliability, "baselines": stage_baselines, "exposure": stage_exposure,
+     "external": stage_external,
      "relative": stage_relative, "membership": stage_membership, "sensitivity": stage_sensitivity}[sys.argv[1]]()
