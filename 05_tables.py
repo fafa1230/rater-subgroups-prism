@@ -71,10 +71,12 @@ def t_mapping():
              "Similarity of the stated importance of eight response attributes"),
             ("Current relation", "Current research correlation",
              "Jaccard similarity of the models chosen as best"),
-            ("Score function, κ, μ, and c", "Fluctuation penalty; distance vs reachability; cohesion vs size; c ∈ {2, …, 8}",
-             "Unchanged (κ = 0.6, μ = 0.5)")]
+            ("Score function, κ, μ, and c",
+             "Fluctuation penalty; κ: distance vs reachability; μ: membership density vs size; c from 2 to k/2 for k DMs",
+             "Same function and values (κ = 0.6, μ = 0.5); κ also smooths memberships (Eq. 5); μ: cohesion vs size; "
+             "c ∈ {2, …, 8}")]
     table("Table 2.2 SCO-FCM components and their counterparts in this study",
-          pd.DataFrame(rows, columns=["Component", "Baseline [5]", "This study"]), slug="table2_2_mapping")
+          pd.DataFrame(rows, columns=["Component", "Baseline [6]", "This study"]), slug="table2_2_mapping")
 
 
 # ---------------------------------------------------------------- Table 3.1 validity against the null
@@ -120,14 +122,16 @@ def t_replication():
             ("Largest difference, held-out (B)", mr(obs.held_max_gap), mr(nul.held_max_gap)),
             ("Largest ε², in-sample (A)", mr(obs.in_max_eps2), mr(nul.in_max_eps2)),
             ("Largest ε², held-out (B)", mr(obs.held_max_eps2), mr(nul.held_max_eps2)),
-            ("Profile correlation, A vs B", f3(obs.profile_r.mean()), f3(nul.profile_r.mean())),
+            ("Profile correlation, A vs B", mr(obs.profile_r), mr(nul.profile_r)),
             ("Reliability of individual preferences (r)", f3(rel.loc["real", "r_model_mean"]),
              f"{f3(rel.loc['permuted', 'r_model_mean'])} [{f3(rel.loc['permuted', 'r_model_q025'])}, "
              f"{f3(rel.loc['permuted', 'r_model_q975'])}]")]
     table("Table 3.2 Stability and replication of the subgroups",
           pd.DataFrame(rows, columns=["Measure", "Observed", "Permutation null"]),
           note=("Stability: 200 subsamples of 80% of the participants. Replication: means [2.5th, 97.5th percentiles] over "
-                "50 splits into halves A and B, subgroups formed on A; ε² = H/(n − 1) of Kruskal–Wallis tests. "
+                "50 splits into halves A and B, subgroups formed on A; ε² = H/(n − 1) of Kruskal–Wallis tests; profile "
+                "correlation: correlation over the models between each subgroup's deviations from the mean scores in A and "
+                "in B, weighted by subgroup size. "
                 "Reliability: null mean [95% range]."),
           slug="table3_2_replication")
 

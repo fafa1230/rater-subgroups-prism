@@ -1,6 +1,6 @@
-Component,Baseline [5],This study
+Component,Baseline [6],This study
 Decision maker (DM),Expert or stakeholder,PRISM participant
 Assessment,Probabilistic hesitant fuzzy element (P-HFE),"Win (1), tie (0.5), and loss (0) outcomes in opening turns, with relative frequencies"
 "Background relation, weighted by ζ",Historical background correlation,Similarity of the stated importance of eight response attributes
 Current relation,Current research correlation,Jaccard similarity of the models chosen as best
-"Score function, κ, μ, and c","Fluctuation penalty; distance vs reachability; cohesion vs size; c ∈ {2, …, 8}","Unchanged (κ = 0.6, μ = 0.5)"
+"Score function, κ, μ, and c",Fluctuation penalty; κ: distance vs reachability; μ: membership density vs size; c from 2 to k/2 for k DMs,"Same function and values (κ = 0.6, μ = 0.5); κ also smooths memberships (Eq. 5); μ: cohesion vs size; c ∈ {2, …, 8}"

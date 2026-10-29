@@ -14,13 +14,13 @@
 
 **Table 2.2 SCO-FCM components and their counterparts in this study**
 
-| Component | Baseline [5] | This study |
+| Component | Baseline [6] | This study |
 |---|---|---|
 | Decision maker (DM) | Expert or stakeholder | PRISM participant |
 | Assessment | Probabilistic hesitant fuzzy element (P-HFE) | Win (1), tie (0.5), and loss (0) outcomes in opening turns, with relative frequencies |
 | Background relation, weighted by ζ | Historical background correlation | Similarity of the stated importance of eight response attributes |
 | Current relation | Current research correlation | Jaccard similarity of the models chosen as best |
-| Score function, κ, μ, and c | Fluctuation penalty; distance vs reachability; cohesion vs size; c ∈ {2, …, 8} | Unchanged (κ = 0.6, μ = 0.5) |
+| Score function, κ, μ, and c | Fluctuation penalty; κ: distance vs reachability; μ: membership density vs size; c from 2 to k/2 for k DMs | Same function and values (κ = 0.6, μ = 0.5); κ also smooths memberships (Eq. 5); μ: cohesion vs size; c ∈ {2, …, 8} |
 
 
 **Table 3.1 Cluster validity of the selected partition (c* = 2) against 1,000 permutation nulls**
@@ -49,10 +49,10 @@
 | Largest difference, held-out (B) | 0.066 [0.042, 0.094] | 0.065 [0.039, 0.089] |
 | Largest ε², in-sample (A) | 0.375 [0.196, 0.491] | 0.323 [0.187, 0.450] |
 | Largest ε², held-out (B) | 0.010 [0.005, 0.018] | 0.009 [0.004, 0.018] |
-| Profile correlation, A vs B | 0.129 | 0.021 |
+| Profile correlation, A vs B | 0.129 [−0.218, 0.671] | 0.021 [−0.342, 0.476] |
 | Reliability of individual preferences (r) | 0.037 | 0.000 [−0.022, 0.027] |
 
-*Note.* Stability: 200 subsamples of 80% of the participants. Replication: means [2.5th, 97.5th percentiles] over 50 splits into halves A and B, subgroups formed on A; ε² = H/(n − 1) of Kruskal–Wallis tests. Reliability: null mean [95% range].
+*Note.* Stability: 200 subsamples of 80% of the participants. Replication: means [2.5th, 97.5th percentiles] over 50 splits into halves A and B, subgroups formed on A; ε² = H/(n − 1) of Kruskal–Wallis tests; profile correlation: correlation over the models between each subgroup's deviations from the mean scores in A and in B, weighted by subgroup size. Reliability: null mean [95% range].
 
 **Table 3.3 Algorithm 1 and other clustering methods, each against its own permutation null**
 

@@ -6,5 +6,5 @@ Replication: ARI between halves A and B,−0.0001,0.0003
 "Largest difference, held-out (B)","0.066 [0.042, 0.094]","0.065 [0.039, 0.089]"
 "Largest ε², in-sample (A)","0.375 [0.196, 0.491]","0.323 [0.187, 0.450]"
 "Largest ε², held-out (B)","0.010 [0.005, 0.018]","0.009 [0.004, 0.018]"
-"Profile correlation, A vs B",0.129,0.021
+"Profile correlation, A vs B","0.129 [−0.218, 0.671]","0.021 [−0.342, 0.476]"
 Reliability of individual preferences (r),0.037,"0.000 [−0.022, 0.027]"

@@ -13,7 +13,7 @@
   },
   "table3_2_replication": {
     "title": "Table 3.2 Stability and replication of the subgroups",
-    "note": "Stability: 200 subsamples of 80% of the participants. Replication: means [2.5th, 97.5th percentiles] over 50 splits into halves A and B, subgroups formed on A; ε² = H/(n − 1) of Kruskal–Wallis tests. Reliability: null mean [95% range]."
+    "note": "Stability: 200 subsamples of 80% of the participants. Replication: means [2.5th, 97.5th percentiles] over 50 splits into halves A and B, subgroups formed on A; ε² = H/(n − 1) of Kruskal–Wallis tests; profile correlation: correlation over the models between each subgroup's deviations from the mean scores in A and in B, weighted by subgroup size. Reliability: null mean [95% range]."
   },
   "table3_3_baselines": {
     "title": "Table 3.3 Algorithm 1 and other clustering methods, each against its own permutation null",
