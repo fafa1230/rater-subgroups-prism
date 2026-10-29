@@ -42,7 +42,7 @@ pip install -r requirements.txt
 | 5 | `python -I 03_analyze.py stability` | 200 subsamples of 80% of the participants |
 | 6 | `python -I 03_analyze.py split` | Split-half replication and held-out tests, real and null |
 | 6b | `python -I 03_analyze.py reliability` | Split-half consistency of individual preferences, without clustering |
-| 7 | `python -I 03_analyze.py baselines` | Nine other clustering methods, including Louvain community detection, each against its own null |
+| 7 | `python -I 03_analyze.py baselines` | Nine other clustering methods, including Louvain community detection, and the published SCO-FCM (`src/sco_fcm.py`), each against its own null |
 | 7b | `python -I 03_analyze.py exposure` | Whether the models a participant met depend on the participant (χ² against 1,000 reassignments) |
 | 8 | `python -I 03_analyze.py external` | Association with sociodemographics; representation of groups by the rankings |
 | 9 | `python -I 03_analyze.py relative` | Robustness: graded instead of pairwise P-HFE encoding |

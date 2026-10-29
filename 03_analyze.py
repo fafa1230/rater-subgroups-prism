@@ -5,7 +5,7 @@
     python -I 03_analyze.py stability   # 80% participant subsamples
     python -I 03_analyze.py split       # split-half replication and held-out tests (real and null)
     python -I 03_analyze.py reliability # split-half consistency of individual preferences (no clustering)
-    python -I 03_analyze.py baselines   # other clustering methods, each against its own null
+    python -I 03_analyze.py baselines   # other clustering methods and the published SCO-FCM, each against its own null
     python -I 03_analyze.py exposure    # whether the models a participant met depend on the participant
     python -I 03_analyze.py external    # sociodemographic validation and representation of groups
     python -I 03_analyze.py relative    # robustness: graded instead of pairwise P-HFE encoding
@@ -33,6 +33,7 @@ from sklearn.mixture import GaussianMixture  # noqa: E402
 
 import config  # noqa: E402
 from src import algorithm1 as A1  # noqa: E402
+from src import sco_fcm  # noqa: E402
 from src.data import build_instance, pagerank, reassign_conversations, split_conversations  # noqa: E402
 from src.stats import (cramers_v, p_bh, p_holm, p_upper, permanova_r2,  # noqa: E402
                        validity_indices)
@@ -300,6 +301,11 @@ def baseline_labels(d, k, fast=False):
     if not fast:
         out["HDBSCAN (data-driven c)"] = HDBSCAN(min_cluster_size=20).fit_predict(X)
         out["Louvain (behavioural graph, data-driven c)"] = louvain_labels(d)
+        rel = (X, d["S_hist"], d["S_curr"], d["pr_h"], d["pr_c"], k)
+        out["Published SCO-FCM, objective as printed"] = sco_fcm.cluster(*rel, printed=True)[1]
+        out["Published SCO-FCM, objective as described"] = sco_fcm.cluster(*rel, printed=False)[1]
+        out["Published SCO-FCM, Algorithm 3 (cost cc)"] = sco_fcm.cluster_algorithm3(*rel)[0]
+        out["Published SCO-FCM, Algorithm 3 (cost 1/cc)"] = sco_fcm.cluster_algorithm3(*rel, inverse=True)[0]
     return out
 
 

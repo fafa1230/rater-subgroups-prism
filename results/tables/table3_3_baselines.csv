@@ -9,3 +9,5 @@ Ward,1152/115,0.032,0.041,0.832,−0.001
 "Spectral, kNN profiles",935/332,0.055,0.055,0.574,−0.001
 HDBSCAN,no clusters (all noise),–,–,–,0.000
 "Louvain, current relation",448/370/227/222,0.014,0.014,0.594,0.006
+"Published SCO-FCM, objective",one subgroup (all participants),–,–,–,0.000
+"Published SCO-FCM, Algorithm 3",824/443,0.054,0.057,0.624,0.176

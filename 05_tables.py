@@ -139,23 +139,45 @@ SHORT = {"Ablation: no reachability (kappa = 1)": "No reachability (κ = 1)", "S
          "Louvain (behavioural graph, data-driven c)": "Louvain, current relation"}
 
 
+OBJ = ("Published SCO-FCM, objective as printed", "Published SCO-FCM, objective as described")
+ALG3, ALG3_INV = "Published SCO-FCM, Algorithm 3 (cost cc)", "Published SCO-FCM, Algorithm 3 (cost 1/cc)"
+
+
 def t_baselines():
     b = pd.read_csv(RES / "baselines.csv", index_col=0)
+    one_group = lambda name: name in b.index and b.loc[name, "n_clusters"] == 1
     rows = []
     for name, r in b.iterrows():
+        if name in OBJ:
+            if name == OBJ[0] and all(one_group(n) for n in OBJ):
+                rows.append(("Published SCO-FCM, objective", "one subgroup (all participants)", "–", "–", "–",
+                             f3(r.ari_vs_algorithm1)))
+                continue
+            if all(one_group(n) for n in OBJ):
+                continue
+        if name == ALG3_INV and one_group(name):
+            continue
+        label = {ALG3: "Published SCO-FCM, Algorithm 3"}.get(name, SHORT.get(name, name))
         if r.n_clusters < 2:
-            rows.append((SHORT.get(name, name), "no clusters (all noise)", "–", "–", "–", f3(r.ari_vs_algorithm1)))
+            what = "no clusters (all noise)" if r.noise > 0 else "one subgroup (all participants)"
+            rows.append((label, what, "–", "–", "–", f3(r.ari_vs_algorithm1)))
             continue
         sizes = "/".join(str(int(x)) for x in json.loads(r.sizes.replace("'", '"')))
-        rows.append((SHORT.get(name, name), sizes, f3(r.sil_euc), f3(r.sil_euc_null_mean), fp(r.sil_euc_p),
+        rows.append((label, sizes, f3(r.sil_euc), f3(r.sil_euc_null_mean), fp(r.sil_euc_p),
                      "–" if name.startswith("Algorithm 1") else f3(r.ari_vs_algorithm1)))
     lv = b.loc[[n for n in b.index if n.startswith("Louvain")][0]]
+    note = ("Euclidean silhouettes on the same P-HFE profiles; 100 null replicates per method. All methods except "
+            "HDBSCAN and Louvain use c = 2. Modularity of the Louvain communities on the current relation: "
+            f"{f3(lv.modularity)} (null mean {f3(lv.modularity_null_mean)}, p = {fp(lv.modularity_p)}).")
+    if ALG3 in b.index:
+        note += (" Published SCO-FCM: the baseline's initial centers and reachability matrix (the background and current "
+                 "relations combined with ζ) with its soft-constrained objective, under either direction of the "
+                 "consensus cost, or with its Algorithm 3, which adds the cost to the distance")
+        note += ("; with the inverse cost, Algorithm 3 also placed all participants in one subgroup."
+                 if one_group(ALG3_INV) else ".")
     table("Table 3.3 Algorithm 1 and other clustering methods, each against its own permutation null",
           pd.DataFrame(rows, columns=["Method", "Sizes", "Silhouette", "Null mean", "p", "ARI with Alg. 1"]),
-          note=("Euclidean silhouettes on the same P-HFE profiles; 100 null replicates per method. All methods except "
-                "HDBSCAN and Louvain use c = 2. Modularity of the Louvain communities on the current relation: "
-                f"{f3(lv.modularity)} (null mean {f3(lv.modularity_null_mean)}, p = {fp(lv.modularity_p)})."),
-          slug="table3_3_baselines")
+          note=note, slug="table3_3_baselines")
 
 
 # ---------------------------------------------------------------- Table 3.4 external validation

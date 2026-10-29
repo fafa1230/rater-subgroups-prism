@@ -17,7 +17,7 @@
   },
   "table3_3_baselines": {
     "title": "Table 3.3 Algorithm 1 and other clustering methods, each against its own permutation null",
-    "note": "Euclidean silhouettes on the same P-HFE profiles; 100 null replicates per method. All methods except HDBSCAN and Louvain use c = 2. Modularity of the Louvain communities on the current relation: 0.096 (null mean 0.097, p = 0.733)."
+    "note": "Euclidean silhouettes on the same P-HFE profiles; 100 null replicates per method. All methods except HDBSCAN and Louvain use c = 2. Modularity of the Louvain communities on the current relation: 0.096 (null mean 0.097, p = 0.733). Published SCO-FCM: the baseline's initial centers and reachability matrix (the background and current relations combined with ζ) with its soft-constrained objective, under either direction of the consensus cost, or with its Algorithm 3, which adds the cost to the distance; with the inverse cost, Algorithm 3 also placed all participants in one subgroup."
   },
   "table3_4_external": {
     "title": "Table 3.4 Sociodemographic validation of the subgroups",

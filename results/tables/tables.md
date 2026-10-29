@@ -68,8 +68,10 @@
 | Spectral, kNN profiles | 935/332 | 0.055 | 0.055 | 0.574 | −0.001 |
 | HDBSCAN | no clusters (all noise) | – | – | – | 0.000 |
 | Louvain, current relation | 448/370/227/222 | 0.014 | 0.014 | 0.594 | 0.006 |
+| Published SCO-FCM, objective | one subgroup (all participants) | – | – | – | 0.000 |
+| Published SCO-FCM, Algorithm 3 | 824/443 | 0.054 | 0.057 | 0.624 | 0.176 |
 
-*Note.* Euclidean silhouettes on the same P-HFE profiles; 100 null replicates per method. All methods except HDBSCAN and Louvain use c = 2. Modularity of the Louvain communities on the current relation: 0.096 (null mean 0.097, p = 0.733).
+*Note.* Euclidean silhouettes on the same P-HFE profiles; 100 null replicates per method. All methods except HDBSCAN and Louvain use c = 2. Modularity of the Louvain communities on the current relation: 0.096 (null mean 0.097, p = 0.733). Published SCO-FCM: the baseline's initial centers and reachability matrix (the background and current relations combined with ζ) with its soft-constrained objective, under either direction of the consensus cost, or with its Algorithm 3, which adds the cost to the distance; with the inverse cost, Algorithm 3 also placed all participants in one subgroup.
 
 **Table 3.4 Sociodemographic validation of the subgroups**
 
