@@ -1,18 +1,6 @@
 # Tables of the revised manuscript
 
-**Table 2.1 Data used in this study (PRISM opening turns)**
-
-| Item | Value |
-|---|---|
-| Participants (six or more conversations) | 1,267 |
-| Language models | 21 |
-| Conversations | 7,607 |
-| Opening-turn ratings (1–100) | 28,602 |
-| Pairwise outcomes | 80,618 |
-| Outcomes per observed cell (median) | 3 |
-
-
-**Table 2.2 SCO-FCM components and their counterparts in this study**
+**Table 2.1 SCO-FCM components and their counterparts in this study**
 
 | Component | Baseline [6] | This study |
 |---|---|---|
@@ -73,24 +61,6 @@
 
 *Note.* Euclidean silhouettes on the same P-HFE profiles; 100 null replicates per method. All methods except HDBSCAN and Louvain use c = 2. Modularity of the Louvain communities on the current relation: 0.096 (null mean 0.097, p = 0.733). Published SCO-FCM: the baseline's initial centers and reachability matrix (the background and current relations combined with ζ) with its soft-constrained objective, under either direction of the consensus cost, or with its Algorithm 3, which adds the cost to the distance; with the inverse cost, Algorithm 3 also placed all participants in one subgroup.
 
-**Table 3.4 Sociodemographic validation of the subgroups**
-
-| Attribute | n | Groups | Cramér's V | p (Holm) | R² of profiles | p (Holm) |
-|---|---|---|---|---|---|---|
-| Region | 1,264 | 9 | 0.063 | 1.000 | 0.008 | 0.649 |
-| Age | 1,267 | 6 | 0.087 | 0.750 | 0.005 | 1.000 |
-| Gender | 1,267 | 3 | 0.033 | 1.000 | 0.002 | 0.810 |
-| Education | 1,225 | 5 | 0.050 | 1.000 | 0.003 | 1.000 |
-| Employment | 1,251 | 7 | 0.070 | 1.000 | 0.005 | 1.000 |
-| Marital status | 1,233 | 3 | 0.096 | 0.055 | 0.002 | 1.000 |
-| English proficiency | 1,262 | 4 | 0.027 | 1.000 | 0.002 | 1.000 |
-| Religion | 1,216 | 5 | 0.031 | 1.000 | 0.003 | 1.000 |
-| Ethnicity | 1,204 | 6 | 0.072 | 1.000 | 0.004 | 1.000 |
-| Familiarity with LLMs | 1,267 | 3 | 0.063 | 0.756 | 0.002 | 1.000 |
-| Frequency of LLM use | 1,063 | 5 | 0.086 | 0.756 | 0.004 | 1.000 |
-
-*Note.* Attributes were not used for clustering. Cramér's V: association with subgroup membership; R²: share of the variation in preference profiles explained by the attribute (PERMANOVA). 999 permutations each.
-
 **Table S1 Sensitivity to the balancing parameters and robustness checks (supplementary)**
 
 | Measure | Value |
@@ -143,3 +113,33 @@
 | Ethnicity | White | 816 | 0.943 | 0.933 | 0.947 [0.905, 0.981] | 0.498 | 1.000 |
 
 *Note.* Kendall's τ between a group's model ranking and the ranking named in the column; p tests whether the group is represented worse than a random group of the same size (999 permutations).
+
+**Table S3 Sociodemographic validation of the subgroups (supplementary)**
+
+| Attribute | n | Groups | Cramér's V | p (Holm) | R² of profiles | p (Holm) |
+|---|---|---|---|---|---|---|
+| Region | 1,264 | 9 | 0.063 | 1.000 | 0.008 | 0.649 |
+| Age | 1,267 | 6 | 0.087 | 0.750 | 0.005 | 1.000 |
+| Gender | 1,267 | 3 | 0.033 | 1.000 | 0.002 | 0.810 |
+| Education | 1,225 | 5 | 0.050 | 1.000 | 0.003 | 1.000 |
+| Employment | 1,251 | 7 | 0.070 | 1.000 | 0.005 | 1.000 |
+| Marital status | 1,233 | 3 | 0.096 | 0.055 | 0.002 | 1.000 |
+| English proficiency | 1,262 | 4 | 0.027 | 1.000 | 0.002 | 1.000 |
+| Religion | 1,216 | 5 | 0.031 | 1.000 | 0.003 | 1.000 |
+| Ethnicity | 1,204 | 6 | 0.072 | 1.000 | 0.004 | 1.000 |
+| Familiarity with LLMs | 1,267 | 3 | 0.063 | 0.756 | 0.002 | 1.000 |
+| Frequency of LLM use | 1,063 | 5 | 0.086 | 0.756 | 0.004 | 1.000 |
+
+*Note.* Attributes were not used for clustering. Cramér's V: association with subgroup membership; R²: share of the variation in preference profiles explained by the attribute (PERMANOVA). 999 permutations each.
+
+**Table S4 Data used in this study (PRISM opening turns) (supplementary)**
+
+| Item | Value |
+|---|---|
+| Participants (six or more conversations) | 1,267 |
+| Language models | 21 |
+| Conversations | 7,607 |
+| Opening-turn ratings (1–100) | 28,602 |
+| Pairwise outcomes | 80,618 |
+| Outcomes per observed cell (median) | 3 |
+

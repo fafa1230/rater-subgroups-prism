@@ -48,7 +48,7 @@ def table(title, df, note=None, slug=None):
     df.to_csv(OUT / f"{slug}.csv", index=False)
 
 
-# ---------------------------------------------------------------- Table 2.1 data
+# ---------------------------------------------------------------- Table S4 data (given in the text of Section 2.2)
 def t_data():
     d = load("data_summary.json")
     rows = [("Participants (six or more conversations)", f"{d['participants']:,}"),
@@ -58,11 +58,11 @@ def t_data():
             ("Pairwise outcomes", f"{d['pairwise_outcomes']:,}"),
             ("Outcomes per observed cell (median)", f"{d['outcomes_per_cell_median']:.0f}"),
 ]
-    table("Table 2.1 Data used in this study (PRISM opening turns)", pd.DataFrame(rows, columns=["Item", "Value"]),
-          slug="table2_1_data")
+    table("Table S4 Data used in this study (PRISM opening turns) (supplementary)", pd.DataFrame(rows, columns=["Item", "Value"]),
+          slug="tableS4_data")
 
 
-# ---------------------------------------------------------------- Table 2.2 mapping of the method to the data
+# ---------------------------------------------------------------- Table 2.1 mapping of the method to the data
 def t_mapping():
     rows = [("Decision maker (DM)", "Expert or stakeholder", "PRISM participant"),
             ("Assessment", "Probabilistic hesitant fuzzy element (P-HFE)",
@@ -75,8 +75,8 @@ def t_mapping():
              "Fluctuation penalty; κ: distance vs reachability; μ: membership density vs size; c from 2 to k/2 for k DMs",
              "Same function and values (κ = 0.6, μ = 0.5); κ also smooths memberships (Eq. 5); μ: cohesion vs size; "
              "c ∈ {2, …, 8}")]
-    table("Table 2.2 SCO-FCM components and their counterparts in this study",
-          pd.DataFrame(rows, columns=["Component", "Baseline [6]", "This study"]), slug="table2_2_mapping")
+    table("Table 2.1 SCO-FCM components and their counterparts in this study",
+          pd.DataFrame(rows, columns=["Component", "Baseline [6]", "This study"]), slug="table2_1_mapping")
 
 
 # ---------------------------------------------------------------- Table 3.1 validity against the null
@@ -184,7 +184,7 @@ def t_baselines():
           note=note, slug="table3_3_baselines")
 
 
-# ---------------------------------------------------------------- Table 3.4 external validation
+# ---------------------------------------------------------------- Table S3 external validation
 def t_external():
     a = pd.read_csv(RES / "external_association.csv")
     names = {"region": "Region", "age": "Age", "gender": "Gender", "education": "Education", "employment": "Employment",
@@ -192,11 +192,11 @@ def t_external():
              "lm_familiarity": "Familiarity with LLMs", "lm_use": "Frequency of LLM use"}
     rows = [(names[r.variable], f"{r.n:,}", r.groups, f3(r.cramers_v_cluster), fp(r.p_cluster_holm),
              f3(r.R2_profiles), fp(r.p_profiles_holm)) for r in a.itertuples()]
-    table("Table 3.4 Sociodemographic validation of the subgroups",
+    table("Table S3 Sociodemographic validation of the subgroups (supplementary)",
           pd.DataFrame(rows, columns=["Attribute", "n", "Groups", "Cramér's V", "p (Holm)", "R² of profiles", "p (Holm)"]),
           note=("Attributes were not used for clustering. Cramér's V: association with subgroup membership; R²: share of the "
                 "variation in preference profiles explained by the attribute (PERMANOVA). 999 permutations each."),
-          slug="table3_4_external")
+          slug="tableS3_external")
 
 
 # ---------------------------------------------------------------- Table 3.5 sensitivity and robustness
@@ -256,7 +256,7 @@ def main():
     OUT.mkdir(exist_ok=True)
     for old in OUT.glob("*"):
         old.unlink()
-    for f in (t_data, t_mapping, t_validity, t_replication, t_baselines, t_external, t_sensitivity, t_representation):
+    for f in (t_mapping, t_validity, t_replication, t_baselines, t_sensitivity, t_representation, t_external, t_data):
         f()
     md, ht = ["# Tables of the revised manuscript\n"], []
     for title, df, note, _ in TABLES:

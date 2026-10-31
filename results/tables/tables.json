@@ -1,10 +1,6 @@
 {
-  "table2_1_data": {
-    "title": "Table 2.1 Data used in this study (PRISM opening turns)",
-    "note": null
-  },
-  "table2_2_mapping": {
-    "title": "Table 2.2 SCO-FCM components and their counterparts in this study",
+  "table2_1_mapping": {
+    "title": "Table 2.1 SCO-FCM components and their counterparts in this study",
     "note": null
   },
   "table3_1_validity": {
@@ -19,10 +15,6 @@
     "title": "Table 3.3 Algorithm 1 and other clustering methods, each against its own permutation null",
     "note": "Euclidean silhouettes on the same P-HFE profiles; 100 null replicates per method. All methods except HDBSCAN and Louvain use c = 2. Modularity of the Louvain communities on the current relation: 0.096 (null mean 0.097, p = 0.733). Published SCO-FCM: the baseline's initial centers and reachability matrix (the background and current relations combined with ζ) with its soft-constrained objective, under either direction of the consensus cost, or with its Algorithm 3, which adds the cost to the distance; with the inverse cost, Algorithm 3 also placed all participants in one subgroup."
   },
-  "table3_4_external": {
-    "title": "Table 3.4 Sociodemographic validation of the subgroups",
-    "note": "Attributes were not used for clustering. Cramér's V: association with subgroup membership; R²: share of the variation in preference profiles explained by the attribute (PERMANOVA). 999 permutations each."
-  },
   "tableS1_sensitivity": {
     "title": "Table S1 Sensitivity to the balancing parameters and robustness checks (supplementary)",
     "note": "Each configuration was compared with the same 1,000 permutation nulls as Table 3.1; the graded encoding with 200."
@@ -30,5 +22,13 @@
   "tableS2_representation": {
     "title": "Table S2 Representation of sociodemographic groups by the pooled and the SCO-FCM consensus rankings (supplementary)",
     "note": "Kendall's τ between a group's model ranking and the ranking named in the column; p tests whether the group is represented worse than a random group of the same size (999 permutations)."
+  },
+  "tableS3_external": {
+    "title": "Table S3 Sociodemographic validation of the subgroups (supplementary)",
+    "note": "Attributes were not used for clustering. Cramér's V: association with subgroup membership; R²: share of the variation in preference profiles explained by the attribute (PERMANOVA). 999 permutations each."
+  },
+  "tableS4_data": {
+    "title": "Table S4 Data used in this study (PRISM opening turns) (supplementary)",
+    "note": null
   }
 }
